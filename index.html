@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DonutX Shop | Minecraft Items & Services</title>
+    <title>Shop | DonutX - Minecraft Items & Services</title>
     <style>
         * {
             margin: 0;
@@ -74,7 +74,6 @@
             display: flex;
             align-items: center;
             text-shadow: 0 0 20px rgba(39, 149, 245, 0.6);
-            cursor: pointer;
         }
 
         .logo::before {
@@ -128,99 +127,6 @@
             font-size: 1.2rem;
             color: #cccccc;
             margin-bottom: 2rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #2795F5, #1e7ad4);
-            color: #000000;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(39, 149, 245, 0.3);
-            border: none;
-            cursor: pointer;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(39, 149, 245, 0.4);
-        }
-
-        .steps-section {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-            border: 1px solid rgba(39, 149, 245, 0.2);
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            margin-bottom: 3rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .steps-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: #2795F5;
-        }
-
-        .steps-subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #aaaaaa;
-            margin-bottom: 3rem;
-        }
-
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .step {
-            text-align: center;
-            padding: 2rem 1rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(39, 149, 245, 0.05), rgba(30, 122, 212, 0.02));
-            border: 1px solid rgba(39, 149, 245, 0.2);
-        }
-
-        .step:hover {
-            transform: translateY(-5px);
-            border-color: rgba(39, 149, 245, 0.5);
-            box-shadow: 0 10px 30px rgba(39, 149, 245, 0.15);
-        }
-
-        .step-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, #2795F5, #1e7ad4);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #000000;
-            box-shadow: 0 5px 15px rgba(39, 149, 245, 0.3);
-        }
-
-        .step h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-
-        .step p {
-            color: #aaaaaa;
-            line-height: 1.6;
         }
 
         .shop-section {
@@ -490,6 +396,12 @@
             cursor: pointer;
         }
 
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #2795F5;
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -530,20 +442,6 @@
             color: #ffffff;
         }
 
-        .page-content {
-            display: none;
-        }
-
-        .page-content.active {
-            display: block;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #2795F5;
-        }
-
         footer {
             background: linear-gradient(135deg, rgba(39, 149, 245, 0.1), rgba(30, 122, 212, 0.05));
             border-top: 1px solid rgba(39, 149, 245, 0.2);
@@ -556,10 +454,6 @@
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
-            }
-            
-            .steps-container {
-                grid-template-columns: 1fr;
             }
             
             .nav-links {
@@ -578,107 +472,70 @@
     
     <header>
         <nav class="container">
-            <div class="logo" onclick="showPage('home')">DonutX</div>
+            <a href="index.html" class="logo">DonutX</a>
             <ul class="nav-links">
-                <li><a onclick="showPage('home')" class="nav-link active" data-page="home">Home</a></li>
-                <li><a onclick="showPage('shop')" class="nav-link" data-page="shop">Shop</a></li>
-                <li><a href="https://discord.gg/2dbchSR64c" target="_blank" class="nav-link">Discord</a></li>
-                <li><a href="#" class="nav-link">Support</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="https://discord.gg/2dbchSR64c" target="_blank">Discord</a></li>
+                <li><a href="#">Support</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container">
-        <!-- Home Page -->
-        <div id="home-page" class="page-content active">
-            <section class="hero">
-                <h1>DonutX Shop</h1>
-                <p>Get your favorite DonutSMP in-game items delivered securely</p>
-                <button class="cta-button" onclick="showPage('shop')">Start Shopping</button>
-            </section>
+        <section class="hero">
+            <h1>DonutX Shop</h1>
+            <p>Browse our collection of exclusive DonutSMP items</p>
+        </section>
 
-            <section class="steps-section">
-                <h2 class="steps-title">How it Works!</h2>
-                <p class="steps-subtitle">3 simple steps to complete a purchase!</p>
-                
-                <div class="steps-container">
-                    <div class="step">
-                        <div class="step-icon">🛒</div>
-                        <h3>Shop</h3>
-                        <p>Explore the shop and find any product you may want to purchase</p>
+        <section class="shop-section">
+            <div class="notice">
+                <p><strong>Payment:</strong> Secure checkout with Stripe</p>
+                <p><strong>Item Delivery:</strong> After payment, create a support ticket on <a href="https://discord.gg/2dbchSR64c" class="discord-link" target="_blank">Discord</a> to receive your in-game items</p>
+                <p><strong>Disclaimer:</strong> We are NOT Related or Associated to DonutHub.Store</p>
+            </div>
+
+            <div class="stock-update-info">
+                <p><strong>Auto-Updated Stock:</strong> Our inventory is automatically updated every 30 seconds</p>
+                <p><strong>Real-Time Pricing:</strong> All prices and availability are fetched from our live stock system</p>
+            </div>
+
+            <!-- Price Converter -->
+            <div class="price-converter">
+                <h3>💰 Price Calculator</h3>
+                <div class="converter-grid">
+                    <div>
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" placeholder="Enter amount">
                     </div>
-                    
-                    <div class="step">
-                        <div class="step-icon">💳</div>
-                        <h3>Pay with Stripe</h3>
-                        <p>Checkout securely with Stripe payment processing</p>
+                    <div>
+                        <label for="itemType">Item Type:</label>
+                        <select id="itemType">
+                            <option value="">Select item...</option>
+                        </select>
                     </div>
-                    
-                    <div class="step">
-                        <div class="step-icon">🎫</div>
-                        <h3>Discord Ticket</h3>
-                        <p>After payment, create a Discord ticket to receive your in-game items</p>
-                    </div>
+                    <button onclick="calculatePrice()">Calculate</button>
                 </div>
-            </section>
-        </div>
+                <div id="calculatorResult" class="calculator-result">Select an item and enter an amount to calculate total price</div>
+            </div>
 
-        <!-- Shop Page -->
-        <div id="shop-page" class="page-content">
-            <section class="hero">
-                <h1>DonutX Shop</h1>
-                <p>Browse our collection of exclusive DonutSMP items</p>
-            </section>
-
-            <section class="shop-section">
-                <div class="notice">
-                    <p><strong>Payment:</strong> Secure checkout with Stripe</p>
-                    <p><strong>Item Delivery:</strong> After payment, create a support ticket on <a href="https://discord.gg/2dbchSR64c" class="discord-link" target="_blank">Discord</a> to receive your in-game items</p>
-                    <p><strong>Disclaimer:</strong> We are NOT Related or Associated to DonutHub.Store</p>
+            <div id="productGrid" class="product-grid">
+                <div class="loading">
+                    <h3>🔄 Loading products...</h3>
+                    <p>Fetching latest stock information...</p>
                 </div>
+            </div>
 
-                <div class="stock-update-info">
-                    <p><strong>Auto-Updated Stock:</strong> Our inventory is automatically updated every 30 seconds</p>
-                    <p><strong>Real-Time Pricing:</strong> All prices and availability are fetched from our live stock system</p>
-                </div>
-
-                <!-- Price Converter -->
-                <div class="price-converter">
-                    <h3>💰 Price Calculator</h3>
-                    <div class="converter-grid">
-                        <div>
-                            <label for="amount">Amount:</label>
-                            <input type="number" id="amount" placeholder="Enter amount">
-                        </div>
-                        <div>
-                            <label for="itemType">Item Type:</label>
-                            <select id="itemType">
-                                <option value="">Select item...</option>
-                            </select>
-                        </div>
-                        <button onclick="calculatePrice()">Calculate</button>
-                    </div>
-                    <div id="calculatorResult" class="calculator-result">Select an item and enter an amount to calculate total price</div>
-                </div>
-
-                <div id="productGrid" class="product-grid">
-                    <div class="loading">
-                        <h3>🔄 Loading products...</h3>
-                        <p>Fetching latest stock information...</p>
-                    </div>
-                </div>
-
-                <!-- Cart Summary -->
-                <div id="cartSummary" class="cart-summary">
-                    <h4>🛒 Cart Summary</h4>
-                    <div id="cartItems"></div>
-                    <div id="cartTotal" style="font-weight: bold; margin-top: 1rem;"></div>
-                    <button onclick="proceedToStripe()" style="background: #000000; color: #ffffff; border: none; padding: 1rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; transition: all 0.3s ease;">
-                        <span>💳</span> Checkout with Stripe
-                    </button>
-                </div>
-            </section>
-        </div>
+            <!-- Cart Summary -->
+            <div id="cartSummary" class="cart-summary">
+                <h4>🛒 Cart Summary</h4>
+                <div id="cartItems"></div>
+                <div id="cartTotal" style="font-weight: bold; margin-top: 1rem;"></div>
+                <button onclick="proceedToStripe()" style="background: #000000; color: #ffffff; border: none; padding: 1rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; transition: all 0.3s ease;">
+                    <span>💳</span> Checkout with Stripe
+                </button>
+            </div>
+        </section>
     </main>
 
     <!-- Bulk Order Modal -->
@@ -703,13 +560,14 @@
     </footer>
 
     <script>
-        let cart = [];
-        let currentBulkItem = null;
-        let stockData = [];
-        const STOCK_URL = 'https://your-stock-url.com/stock.txt'; // Replace with actual stock URL
+        // Global variables
+        var cart = [];
+        var currentBulkItem = null;
+        var stockData = [];
+        var STOCK_URL = 'https://star2likesgirls.github.io/tests/stocks.txt';
 
         // Product icons mapping
-        const productIcons = {
+        var productIcons = {
             'money': '💰',
             'currency': '💰',
             'spawners': '🔥',
@@ -723,10 +581,10 @@
 
         // Create floating particles
         function createParticle() {
-            const particle = document.createElement('div');
+            var particle = document.createElement('div');
             particle.className = 'particle';
             
-            const size = Math.random() * 4 + 2;
+            var size = Math.random() * 4 + 2;
             particle.style.width = size + 'px';
             particle.style.height = size + 'px';
             
@@ -738,105 +596,83 @@
             
             document.getElementById('background').appendChild(particle);
             
-            setTimeout(() => {
+            setTimeout(function() {
                 particle.remove();
             }, 20000);
         }
 
-        // Initialize particles
         function initParticles() {
-            for (let i = 0; i < 20; i++) {
+            for (var i = 0; i < 20; i++) {
                 setTimeout(createParticle, i * 200);
             }
             
             setInterval(createParticle, 2000);
         }
 
-        function showPage(pageName) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page-content');
-            pages.forEach(page => page.classList.remove('active'));
-            
-            // Show selected page
-            const targetPage = document.getElementById(pageName + '-page');
-            if (targetPage) {
-                targetPage.classList.add('active');
-            }
-            
-            // Update active nav link
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-            const activeLink = document.querySelector(`[data-page="${pageName}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-
-            // Load shop data when showing shop page
-            if (pageName === 'shop' && stockData.length === 0) {
-                fetchStockData();
-            }
-        }
-
-        // Mock function for demo - replace with actual fetch to your stock URL
-        async function fetchStockData() {
-            try {
-                // Mock data based on your format - replace this with actual fetch
-                const mockStockData = `# DryShop Products - Auto-Updated Stock System
-# Format: Product Name|Price|Stock|Category (category optional)
-# Last updated: Use GitHub to track changes automatically
-# Current Inventory
-1 million DonutSMP Money|0.15|10|Currency
-Skeleton Spawners|0.15|0|Spawners
-Netherite Kit|15|0|kits
-Basic diamond kit|0.01|0|kits
-Premium generator 1 month|10|9999|Account Generators`;
-
-                // In a real implementation, you'd use:
-                // const response = await fetch(STOCK_URL);
-                // const stockText = await response.text();
-                
-                parseStockData(mockStockData);
-                renderProducts();
-                updatePriceCalculator();
-                
-            } catch (error) {
-                console.error('Failed to fetch stock data:', error);
-                showErrorMessage();
-            }
+        // Fetch stock data from GitHub
+        function fetchStockData() {
+            fetch(STOCK_URL)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(stockText) {
+                    console.log('Stock data received:', stockText);
+                    parseStockData(stockText);
+                    renderProducts();
+                    updatePriceCalculator();
+                })
+                .catch(function(error) {
+                    console.error('Failed to fetch stock data:', error);
+                    // Fallback to mock data
+                    var mockStockData = "# DryShop Products - Auto-Updated Stock System\n" +
+                        "# Format: Product Name|Price|Stock|Category (category optional)\n" +
+                        "# Last updated: Use GitHub to track changes automatically\n" +
+                        "# Current Inventory\n" +
+                        "1 million DonutSMP Money|0.15|10|Currency\n" +
+                        "Skeleton Spawners|0.15|0|Spawners\n" +
+                        "Netherite Kit|15|0|kits\n" +
+                        "Basic diamond kit|0.01|0|kits\n" +
+                        "Premium generator 1 month|10|9999|Account Generators";
+                    
+                    parseStockData(mockStockData);
+                    renderProducts();
+                    updatePriceCalculator();
+                    showErrorMessage();
+                });
         }
 
         function parseStockData(stockText) {
             stockData = [];
-            const lines = stockText.split('\n');
+            var lines = stockText.split('\n');
             
-            for (const line of lines) {
-                // Skip comments and empty lines
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i];
                 if (line.trim().startsWith('#') || !line.trim()) {
                     continue;
                 }
                 
-                const parts = line.split('|');
+                var parts = line.split('|');
                 if (parts.length >= 3) {
-                    const name = parts[0].trim();
-                    let price = parts[1].trim();
-                    const stock = parseInt(parts[2].trim());
-                    const category = parts[3] ? parts[3].trim().toLowerCase() : 'default';
+                    var name = parts[0].trim();
+                    var price = parts[1].trim();
+                    var stock = parseInt(parts[2].trim());
+                    var category = parts[3] ? parts[3].trim().toLowerCase() : 'default';
                     
-                    // Handle strikethrough prices (like 0̶.4̶  0.15)
+                    // Handle strikethrough prices
                     if (price.includes('̶')) {
-                        const priceMatch = price.match(/(\d+\.?\d*)\s*$/);
+                        var priceMatch = price.match(/(\d+\.?\d*)\s*$/);
                         if (priceMatch) {
                             price = priceMatch[1];
                         }
                     }
                     
-                    const numericPrice = parseFloat(price);
+                    var numericPrice = parseFloat(price);
                     if (!isNaN(numericPrice)) {
                         stockData.push({
-                            name,
+                            name: name,
                             price: numericPrice,
-                            stock,
-                            category,
+                            stock: stock,
+                            category: category,
                             icon: getProductIcon(name, category)
                         });
                     }
@@ -845,24 +681,287 @@ Premium generator 1 month|10|9999|Account Generators`;
         }
 
         function getProductIcon(name, category) {
-            const nameLC = name.toLowerCase();
+            var nameLC = name.toLowerCase();
             
-            // Check for specific keywords in name
-            for (const [keyword, icon] of Object.entries(productIcons)) {
+            for (var keyword in productIcons) {
                 if (nameLC.includes(keyword)) {
-                    return icon;
+                    return productIcons[keyword];
                 }
             }
             
-            // Check category
             return productIcons[category] || productIcons['default'];
         }
 
         function renderProducts() {
-            const productGrid = document.getElementById('productGrid');
+            var productGrid = document.getElementById('productGrid');
             if (!productGrid) return;
 
             if (stockData.length === 0) {
-                productGrid.innerHTML = `
-                    <div class="loading">
-                        <h3>❌ No products available</h3
+                productGrid.innerHTML = '<div class="loading">' +
+                    '<h3>❌ No products available</h3>' +
+                    '<p>Check your network connection and try again.</p>' +
+                    '</div>';
+                return;
+            }
+
+            var productsHTML = '';
+            
+            for (var i = 0; i < stockData.length; i++) {
+                var product = stockData[i];
+                var isOutOfStock = product.stock <= 0;
+                var stockText = isOutOfStock ? 'No Stock' : product.stock + ' Stock';
+                var stockClass = isOutOfStock ? 'out-of-stock' : 'available';
+                
+                productsHTML += '<div class="product-card ' + (isOutOfStock ? 'out-of-stock' : '') + '">' +
+                    '<div class="product-image">' +
+                    '<div class="product-icon">' + product.icon + '</div>' +
+                    '<div class="stock-badge ' + stockClass + '">' + stockText + '</div>' +
+                    '</div>' +
+                    '<div class="product-info">' +
+                    '<h3>' + product.name + '</h3>' +
+                    '<p class="product-description">Category: ' + product.category + '</p>' +
+                    '<div class="price">€' + product.price.toFixed(2) + '</div>' +
+                    '<button class="add-to-cart-btn" ' + (isOutOfStock ? 'disabled' : '') + ' ' +
+                    'onclick="' + (isOutOfStock ? '' : 'addToCart(\'' + product.name.replace(/'/g, "\\'") + '\', ' + product.price + ', ' + product.stock + ')') + '">' +
+                    (isOutOfStock ? 'Out of Stock' : 'Add to Cart') +
+                    '</button>' +
+                    '</div>' +
+                    '</div>';
+            }
+            
+            productGrid.innerHTML = productsHTML;
+        }
+
+        function updatePriceCalculator() {
+            var itemTypeSelect = document.getElementById('itemType');
+            if (!itemTypeSelect) return;
+
+            itemTypeSelect.innerHTML = '<option value="">Select item...</option>';
+            
+            for (var i = 0; i < stockData.length; i++) {
+                var product = stockData[i];
+                if (product.stock > 0) {
+                    itemTypeSelect.innerHTML += '<option value="' + product.name + '" data-price="' + product.price + '">' + 
+                        product.name + ' (€' + product.price + ' each)</option>';
+                }
+            }
+        }
+
+        function calculatePrice() {
+            var amountInput = document.getElementById('amount');
+            var itemTypeSelect = document.getElementById('itemType');
+            var resultDiv = document.getElementById('calculatorResult');
+
+            if (!amountInput || !itemTypeSelect || !resultDiv) return;
+
+            var amount = parseFloat(amountInput.value);
+            var selectedOption = itemTypeSelect.options[itemTypeSelect.selectedIndex];
+
+            if (!amount || !selectedOption.value || amount <= 0) {
+                resultDiv.innerHTML = '⚠️ Please enter a valid amount and select an item type';
+                return;
+            }
+
+            var itemName = selectedOption.value;
+            var itemPrice = parseFloat(selectedOption.dataset.price);
+            var totalPrice = amount * itemPrice;
+
+            resultDiv.innerHTML = '<div style="text-align: center;">' +
+                '<div style="font-size: 1.2rem; margin-bottom: 0.5rem;">💡 ' + amount + ' ' + itemName + '</div>' +
+                '<div style="font-size: 1.5rem; font-weight: bold;">Total: €' + totalPrice.toFixed(2) + '</div>' +
+                '</div>';
+        }
+
+        function addToCart(item, price, maxStock) {
+            var existingItem = null;
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].name === item) {
+                    existingItem = cart[i];
+                    break;
+                }
+            }
+            
+            if (existingItem) {
+                if (existingItem.quantity < maxStock) {
+                    existingItem.quantity++;
+                    existingItem.total = existingItem.quantity * price;
+                } else {
+                    alert('Maximum stock for ' + item + ' is ' + maxStock);
+                    return;
+                }
+            } else {
+                cart.push({
+                    name: item,
+                    price: price,
+                    quantity: 1,
+                    total: price,
+                    maxStock: maxStock
+                });
+            }
+            
+            updateCartDisplay();
+        }
+
+        function removeFromCart(itemName) {
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].name === itemName) {
+                    cart.splice(i, 1);
+                    break;
+                }
+            }
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            var cartSummary = document.getElementById('cartSummary');
+            var cartItems = document.getElementById('cartItems');
+            var cartTotal = document.getElementById('cartTotal');
+            
+            if (!cartSummary || !cartItems || !cartTotal) return;
+
+            if (cart.length === 0) {
+                cartSummary.style.display = 'none';
+                return;
+            }
+
+            cartSummary.style.display = 'block';
+            
+            var itemsHTML = '';
+            var total = 0;
+            
+            for (var i = 0; i < cart.length; i++) {
+                var item = cart[i];
+                total += item.total;
+                itemsHTML += '<div class="cart-item">' +
+                    '<span>' + item.name + ' x' + item.quantity + '</span>' +
+                    '<span>€' + item.total.toFixed(2) + ' <button onclick="removeFromCart(\'' + item.name.replace(/'/g, "\\'") + '\')">×</button></span>' +
+                    '</div>';
+            }
+            
+            cartItems.innerHTML = itemsHTML;
+            cartTotal.innerHTML = 'Total: €' + total.toFixed(2);
+        }
+
+        function showBulkOrder(itemType) {
+            var product = null;
+            for (var i = 0; i < stockData.length; i++) {
+                if (stockData[i].name.toLowerCase().includes(itemType) || stockData[i].category.includes(itemType)) {
+                    product = stockData[i];
+                    break;
+                }
+            }
+            if (!product) return;
+
+            currentBulkItem = product;
+            
+            var modal = document.getElementById('bulkModal');
+            var modalTitle = document.getElementById('modalTitle');
+            var bulkAmount = document.getElementById('bulkAmount');
+            var bulkPrice = document.getElementById('bulkPrice');
+            
+            if (!modal || !modalTitle || !bulkAmount || !bulkPrice) return;
+
+            modalTitle.textContent = 'Bulk Order: ' + product.name;
+            bulkAmount.value = '';
+            bulkPrice.textContent = 'Price: €' + product.price + ' each';
+            
+            modal.style.display = 'flex';
+            
+            bulkAmount.oninput = function() {
+                var quantity = parseInt(this.value) || 0;
+                var total = quantity * product.price;
+                bulkPrice.textContent = quantity + ' × €' + product.price + ' = €' + total.toFixed(2);
+                
+                if (quantity > product.stock) {
+                    bulkPrice.textContent += ' (Max available: ' + product.stock + ')';
+                    bulkPrice.style.color = '#f44336';
+                } else {
+                    bulkPrice.style.color = '#2795F5';
+                }
+            };
+        }
+
+        function closeBulkModal() {
+            var modal = document.getElementById('bulkModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            currentBulkItem = null;
+        }
+
+        function addBulkToCart() {
+            if (!currentBulkItem) return;
+            
+            var bulkAmount = document.getElementById('bulkAmount');
+            var quantity = parseInt(bulkAmount.value);
+            
+            if (!quantity || quantity <= 0) {
+                alert('Please enter a valid quantity');
+                return;
+            }
+            
+            if (quantity > currentBulkItem.stock) {
+                alert('Maximum available stock is ' + currentBulkItem.stock);
+                return;
+            }
+            
+            var existingItem = null;
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].name === currentBulkItem.name) {
+                    existingItem = cart[i];
+                    break;
+                }
+            }
+            
+            if (existingItem) {
+                var newQuantity = existingItem.quantity + quantity;
+                if (newQuantity > currentBulkItem.stock) {
+                    alert('Total quantity would exceed maximum stock of ' + currentBulkItem.stock);
+                    return;
+                }
+                existingItem.quantity = newQuantity;
+                existingItem.total = existingItem.quantity * currentBulkItem.price;
+            } else {
+                cart.push({
+                    name: currentBulkItem.name,
+                    price: currentBulkItem.price,
+                    quantity: quantity,
+                    total: quantity * currentBulkItem.price,
+                    maxStock: currentBulkItem.stock
+                });
+            }
+            
+            updateCartDisplay();
+            closeBulkModal();
+        }
+
+        function proceedToStripe() {
+            if (cart.length === 0) {
+                alert('Your cart is empty');
+                return;
+            }
+            
+            alert('Stripe checkout would be implemented here. Please create a Discord ticket for now.');
+        }
+
+        function showErrorMessage() {
+            var productGrid = document.getElementById('productGrid');
+            if (productGrid) {
+                productGrid.innerHTML = '<div class="loading">' +
+                    '<h3>⚠️ Failed to load live stock data</h3>' +
+                    '<p>Using fallback product data. Some items may not reflect current availability.</p>' +
+                    '</div>';
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            fetchStockData();
+            
+            // Auto-refresh stock data every 30 seconds
+            setInterval(fetchStockData, 30000);
+        });
+    </script>
+</body>
+</html>

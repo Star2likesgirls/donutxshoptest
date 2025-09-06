@@ -184,7 +184,7 @@
             color: #4CAF50;
         }
 
-        .price-converter {
+        .currency-converter {
             background: linear-gradient(135deg, #2795F5, #1e7ad4);
             padding: 2rem;
             border-radius: 12px;
@@ -192,64 +192,81 @@
             box-shadow: 0 4px 15px rgba(39, 149, 245, 0.3);
         }
 
-        .price-converter h3 {
+        .currency-converter h3 {
             color: #000000;
             text-align: center;
             margin-bottom: 1.5rem;
             font-weight: 600;
         }
 
-        .converter-grid {
+        .converter-controls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr auto 1fr;
             gap: 1rem;
-            align-items: end;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .converter-grid label {
-            color: #000000;
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .converter-grid input,
-        .converter-grid select {
+        .converter-controls select {
             width: 100%;
             padding: 0.8rem;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             background: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
         }
 
-        .converter-grid button {
-            padding: 0.8rem 1.5rem;
+        .currency-swap {
             background: #000000;
             color: #ffffff;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 1.2rem;
         }
 
-        .converter-grid button:hover {
+        .currency-swap:hover {
+            transform: rotate(180deg);
             background: #333333;
-            transform: translateY(-2px);
         }
 
-        .calculator-result {
-            margin-top: 1rem;
-            padding: 1rem;
+        .currency-status {
             background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
             border-radius: 8px;
             color: #ffffff;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .price-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .price-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .price-item h4 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .price-item .price-value {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
         .product-grid {
@@ -333,6 +350,12 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: #2795F5;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-converted {
+            font-size: 1rem;
+            color: #aaaaaa;
             margin-bottom: 1rem;
         }
 
@@ -394,6 +417,34 @@
             padding: 2px 6px;
             margin-left: 10px;
             cursor: pointer;
+        }
+
+        .checkout-btn {
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background: #333333;
+            transform: translateY(-2px);
+        }
+
+        .checkout-btn:disabled {
+            background: #666666;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .loading {
@@ -464,6 +515,16 @@
                 padding: 0.3rem 0.8rem;
                 font-size: 0.9rem;
             }
+
+            .converter-controls {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .currency-swap {
+                justify-self: center;
+                transform: rotate(90deg);
+            }
         }
     </style>
 </head>
@@ -500,23 +561,42 @@
                 <p><strong>Real-Time Pricing:</strong> All prices and availability are fetched from our live stock system</p>
             </div>
 
-            <!-- Price Converter -->
-            <div class="price-converter">
-                <h3>💰 Price Calculator</h3>
-                <div class="converter-grid">
-                    <div>
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" placeholder="Enter amount">
-                    </div>
-                    <div>
-                        <label for="itemType">Item Type:</label>
-                        <select id="itemType">
-                            <option value="">Select item...</option>
-                        </select>
-                    </div>
-                    <button onclick="calculatePrice()">Calculate</button>
+            <!-- Currency Converter -->
+            <div class="currency-converter">
+                <h3>🌍 Currency Converter</h3>
+                <div class="converter-controls">
+                    <select id="fromCurrency">
+                        <option value="EUR">🇪🇺 Euro (EUR)</option>
+                        <option value="USD">🇺🇸 US Dollar (USD)</option>
+                        <option value="GBP">🇬🇧 British Pound (GBP)</option>
+                        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+                        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+                        <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+                        <option value="CHF">🇨🇭 Swiss Franc (CHF)</option>
+                        <option value="SEK">🇸🇪 Swedish Krona (SEK)</option>
+                        <option value="NOK">🇳🇴 Norwegian Krone (NOK)</option>
+                        <option value="DKK">🇩🇰 Danish Krone (DKK)</option>
+                    </select>
+                    <button class="currency-swap" onclick="swapCurrencies()" title="Swap currencies">⇄</button>
+                    <select id="toCurrency">
+                        <option value="USD">🇺🇸 US Dollar (USD)</option>
+                        <option value="EUR">🇪🇺 Euro (EUR)</option>
+                        <option value="GBP">🇬🇧 British Pound (GBP)</option>
+                        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+                        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+                        <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+                        <option value="CHF">🇨🇭 Swiss Franc (CHF)</option>
+                        <option value="SEK">🇸🇪 Swedish Krona (SEK)</option>
+                        <option value="NOK">🇳🇴 Norwegian Krone (NOK)</option>
+                        <option value="DKK">🇩🇰 Danish Krone (DKK)</option>
+                    </select>
                 </div>
-                <div id="calculatorResult" class="calculator-result">Select an item and enter an amount to calculate total price</div>
+                <div class="currency-status" id="currencyStatus">
+                    Loading exchange rates...
+                </div>
+                <div class="price-display" id="priceDisplay" style="display: none;">
+                    <!-- Price comparisons will be displayed here -->
+                </div>
             </div>
 
             <div id="productGrid" class="product-grid">
@@ -531,7 +611,7 @@
                 <h4>🛒 Cart Summary</h4>
                 <div id="cartItems"></div>
                 <div id="cartTotal" style="font-weight: bold; margin-top: 1rem;"></div>
-                <button onclick="proceedToStripe()" style="background: #000000; color: #ffffff; border: none; padding: 1rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; transition: all 0.3s ease;">
+                <button id="checkoutBtn" class="checkout-btn" onclick="proceedToStripe()">
                     <span>💳</span> Checkout with Stripe
                 </button>
             </div>
@@ -559,12 +639,20 @@
         </div>
     </footer>
 
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
     <script>
         // Global variables
         var cart = [];
         var currentBulkItem = null;
         var stockData = [];
+        var exchangeRates = {};
         var STOCK_URL = 'https://star2likesgirls.github.io/tests/stocks.txt';
+        var EXCHANGE_API_URL = 'https://api.exchangerate-api.com/v4/latest/EUR';
+        
+        // Initialize Stripe (replace with your publishable key)
+        var stripe = Stripe('pk_test_51234567890abcdef...');  // Replace with your actual publishable key
 
         // Product icons mapping
         var productIcons = {
@@ -577,6 +665,20 @@
             'generator': '⚡',
             'generators': '⚡',
             'default': '📦'
+        };
+
+        // Currency symbols
+        var currencySymbols = {
+            'EUR': '€',
+            'USD': '$',
+            'GBP': '£',
+            'CAD': 'C$',
+            'AUD': 'A$',
+            'JPY': '¥',
+            'CHF': 'Fr',
+            'SEK': 'kr',
+            'NOK': 'kr',
+            'DKK': 'kr'
         };
 
         // Create floating particles
@@ -609,6 +711,129 @@
             setInterval(createParticle, 2000);
         }
 
+        // Fetch exchange rates
+        function fetchExchangeRates() {
+            fetch(EXCHANGE_API_URL)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    exchangeRates = data.rates;
+                    exchangeRates['EUR'] = 1; // Base currency
+                    updateCurrencyStatus('✅ Exchange rates updated successfully');
+                    updatePriceDisplay();
+                    renderProducts(); // Re-render products with converted prices
+                })
+                .catch(function(error) {
+                    console.error('Failed to fetch exchange rates:', error);
+                    // Fallback rates
+                    exchangeRates = {
+                        'EUR': 1,
+                        'USD': 1.08,
+                        'GBP': 0.86,
+                        'CAD': 1.47,
+                        'AUD': 1.66,
+                        'JPY': 162,
+                        'CHF': 0.97,
+                        'SEK': 11.5,
+                        'NOK': 11.8,
+                        'DKK': 7.46
+                    };
+                    updateCurrencyStatus('⚠️ Using fallback exchange rates');
+                    updatePriceDisplay();
+                    renderProducts();
+                });
+        }
+
+        function updateCurrencyStatus(message) {
+            var statusElement = document.getElementById('currencyStatus');
+            if (statusElement) {
+                var fromCurrency = document.getElementById('fromCurrency').value;
+                var toCurrency = document.getElementById('toCurrency').value;
+                var rate = convertCurrency(1, fromCurrency, toCurrency);
+                
+                statusElement.innerHTML = message + '<br>' +
+                    '1 ' + fromCurrency + ' = ' + rate.toFixed(4) + ' ' + toCurrency;
+            }
+        }
+
+        function convertCurrency(amount, from, to) {
+            if (!exchangeRates[from] || !exchangeRates[to]) return amount;
+            
+            // Convert to EUR first, then to target currency
+            var euroAmount = amount / exchangeRates[from];
+            return euroAmount * exchangeRates[to];
+        }
+
+        function formatCurrency(amount, currency) {
+            var symbol = currencySymbols[currency] || currency;
+            var decimals = currency === 'JPY' ? 0 : 2;
+            return symbol + amount.toFixed(decimals);
+        }
+
+        function swapCurrencies() {
+            var fromSelect = document.getElementById('fromCurrency');
+            var toSelect = document.getElementById('toCurrency');
+            
+            var fromValue = fromSelect.value;
+            var toValue = toSelect.value;
+            
+            fromSelect.value = toValue;
+            toSelect.value = fromValue;
+            
+            updateCurrencyStatus('Currencies swapped');
+            updatePriceDisplay();
+            renderProducts();
+        }
+
+        function updatePriceDisplay() {
+            if (stockData.length === 0) return;
+            
+            var fromCurrency = document.getElementById('fromCurrency').value;
+            var toCurrency = document.getElementById('toCurrency').value;
+            var priceDisplay = document.getElementById('priceDisplay');
+            
+            if (!priceDisplay) return;
+            
+            // Show sample prices for first 3 products
+            var sampleProducts = stockData.slice(0, 3);
+            var displayHTML = '';
+            
+            for (var i = 0; i < sampleProducts.length; i++) {
+                var product = sampleProducts[i];
+                var originalPrice = product.price;
+                var convertedPrice = convertCurrency(originalPrice, fromCurrency, toCurrency);
+                
+                displayHTML += '<div class="price-item">' +
+                    '<h4>' + product.name + '</h4>' +
+                    '<div class="price-value">' + formatCurrency(convertedPrice, toCurrency) + '</div>' +
+                    '</div>';
+            }
+            
+            priceDisplay.innerHTML = displayHTML;
+            priceDisplay.style.display = 'grid';
+        }
+
+        // Event listeners for currency changes
+        function setupCurrencyListeners() {
+            var fromSelect = document.getElementById('fromCurrency');
+            var toSelect = document.getElementById('toCurrency');
+            
+            if (fromSelect && toSelect) {
+                fromSelect.addEventListener('change', function() {
+                    updateCurrencyStatus('Currency changed');
+                    updatePriceDisplay();
+                    renderProducts();
+                });
+                
+                toSelect.addEventListener('change', function() {
+                    updateCurrencyStatus('Currency changed');
+                    updatePriceDisplay();
+                    renderProducts();
+                });
+            }
+        }
+
         // Fetch stock data from GitHub
         function fetchStockData() {
             fetch(STOCK_URL)
@@ -619,7 +844,7 @@
                     console.log('Stock data received:', stockText);
                     parseStockData(stockText);
                     renderProducts();
-                    updatePriceCalculator();
+                    updatePriceDisplay();
                 })
                 .catch(function(error) {
                     console.error('Failed to fetch stock data:', error);
@@ -636,7 +861,7 @@
                     
                     parseStockData(mockStockData);
                     renderProducts();
-                    updatePriceCalculator();
+                    updatePriceDisplay();
                     showErrorMessage();
                 });
         }
@@ -705,12 +930,23 @@
             }
 
             var productsHTML = '';
+            var fromCurrency = document.getElementById('fromCurrency').value;
+            var toCurrency = document.getElementById('toCurrency').value;
             
             for (var i = 0; i < stockData.length; i++) {
                 var product = stockData[i];
                 var isOutOfStock = product.stock <= 0;
                 var stockText = isOutOfStock ? 'No Stock' : product.stock + ' Stock';
                 var stockClass = isOutOfStock ? 'out-of-stock' : 'available';
+                
+                var originalPrice = product.price;
+                var convertedPrice = convertCurrency(originalPrice, fromCurrency, toCurrency);
+                var priceDisplay = formatCurrency(originalPrice, fromCurrency);
+                var convertedPriceDisplay = '';
+                
+                if (fromCurrency !== toCurrency) {
+                    convertedPriceDisplay = '<div class="price-converted">≈ ' + formatCurrency(convertedPrice, toCurrency) + '</div>';
+                }
                 
                 productsHTML += '<div class="product-card ' + (isOutOfStock ? 'out-of-stock' : '') + '">' +
                     '<div class="product-image">' +
@@ -720,7 +956,8 @@
                     '<div class="product-info">' +
                     '<h3>' + product.name + '</h3>' +
                     '<p class="product-description">Category: ' + product.category + '</p>' +
-                    '<div class="price">€' + product.price.toFixed(2) + '</div>' +
+                    '<div class="price">' + priceDisplay + '</div>' +
+                    convertedPriceDisplay +
                     '<button class="add-to-cart-btn" ' + (isOutOfStock ? 'disabled' : '') + ' ' +
                     'onclick="' + (isOutOfStock ? '' : 'addToCart(\'' + product.name.replace(/'/g, "\\'") + '\', ' + product.price + ', ' + product.stock + ')') + '">' +
                     (isOutOfStock ? 'Out of Stock' : 'Add to Cart') +
@@ -730,46 +967,6 @@
             }
             
             productGrid.innerHTML = productsHTML;
-        }
-
-        function updatePriceCalculator() {
-            var itemTypeSelect = document.getElementById('itemType');
-            if (!itemTypeSelect) return;
-
-            itemTypeSelect.innerHTML = '<option value="">Select item...</option>';
-            
-            for (var i = 0; i < stockData.length; i++) {
-                var product = stockData[i];
-                if (product.stock > 0) {
-                    itemTypeSelect.innerHTML += '<option value="' + product.name + '" data-price="' + product.price + '">' + 
-                        product.name + ' (€' + product.price + ' each)</option>';
-                }
-            }
-        }
-
-        function calculatePrice() {
-            var amountInput = document.getElementById('amount');
-            var itemTypeSelect = document.getElementById('itemType');
-            var resultDiv = document.getElementById('calculatorResult');
-
-            if (!amountInput || !itemTypeSelect || !resultDiv) return;
-
-            var amount = parseFloat(amountInput.value);
-            var selectedOption = itemTypeSelect.options[itemTypeSelect.selectedIndex];
-
-            if (!amount || !selectedOption.value || amount <= 0) {
-                resultDiv.innerHTML = '⚠️ Please enter a valid amount and select an item type';
-                return;
-            }
-
-            var itemName = selectedOption.value;
-            var itemPrice = parseFloat(selectedOption.dataset.price);
-            var totalPrice = amount * itemPrice;
-
-            resultDiv.innerHTML = '<div style="text-align: center;">' +
-                '<div style="font-size: 1.2rem; margin-bottom: 0.5rem;">💡 ' + amount + ' ' + itemName + '</div>' +
-                '<div style="font-size: 1.5rem; font-weight: bold;">Total: €' + totalPrice.toFixed(2) + '</div>' +
-                '</div>';
         }
 
         function addToCart(item, price, maxStock) {
@@ -828,24 +1025,40 @@
             
             var itemsHTML = '';
             var total = 0;
+            var fromCurrency = document.getElementById('fromCurrency').value;
+            var toCurrency = document.getElementById('toCurrency').value;
             
             for (var i = 0; i < cart.length; i++) {
                 var item = cart[i];
                 total += item.total;
+                var convertedTotal = convertCurrency(item.total, fromCurrency, toCurrency);
+                var displayPrice = formatCurrency(item.total, fromCurrency);
+                
+                if (fromCurrency !== toCurrency) {
+                    displayPrice += ' (≈ ' + formatCurrency(convertedTotal, toCurrency) + ')';
+                }
+                
                 itemsHTML += '<div class="cart-item">' +
                     '<span>' + item.name + ' x' + item.quantity + '</span>' +
-                    '<span>€' + item.total.toFixed(2) + ' <button onclick="removeFromCart(\'' + item.name.replace(/'/g, "\\'") + '\')">×</button></span>' +
+                    '<span>' + displayPrice + ' <button onclick="removeFromCart(\'' + item.name.replace(/'/g, "\\'") + '\')">×</button></span>' +
                     '</div>';
             }
             
+            var convertedGrandTotal = convertCurrency(total, fromCurrency, toCurrency);
+            var totalDisplay = formatCurrency(total, fromCurrency);
+            
+            if (fromCurrency !== toCurrency) {
+                totalDisplay += ' (≈ ' + formatCurrency(convertedGrandTotal, toCurrency) + ')';
+            }
+            
             cartItems.innerHTML = itemsHTML;
-            cartTotal.innerHTML = 'Total: €' + total.toFixed(2);
+            cartTotal.innerHTML = 'Total: ' + totalDisplay;
         }
 
-        function showBulkOrder(itemType) {
+        function showBulkOrder(itemName) {
             var product = null;
             for (var i = 0; i < stockData.length; i++) {
-                if (stockData[i].name.toLowerCase().includes(itemType) || stockData[i].category.includes(itemType)) {
+                if (stockData[i].name === itemName) {
                     product = stockData[i];
                     break;
                 }
@@ -957,10 +1170,20 @@
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             initParticles();
+            setupCurrencyListeners();
+            fetchExchangeRates();
             fetchStockData();
             
             // Auto-refresh stock data every 30 seconds
             setInterval(fetchStockData, 30000);
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            var modal = document.getElementById('bulkModal');
+            if (event.target === modal) {
+                closeBulkModal();
+            }
         });
     </script>
 </body>

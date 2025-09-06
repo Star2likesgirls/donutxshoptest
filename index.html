@@ -639,9 +639,6 @@
         </div>
     </footer>
 
-    <!-- Stripe.js -->
-    <script src="https://js.stripe.com/v3/"></script>
-    
     <script>
         // Global variables
         var cart = [];
@@ -1173,6 +1170,7 @@
             setupCurrencyListeners();
             fetchExchangeRates();
             fetchStockData();
+            handlePaymentSuccess(); // Check for payment return
             
             // Auto-refresh stock data every 30 seconds
             setInterval(fetchStockData, 30000);

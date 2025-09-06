@@ -853,21 +853,7 @@
 
         // Fetch stock data with better error handling and timeout
         function fetchStockData() {
-            // For now, use mock data since the external URL might not be working
-            // Replace this with your actual stock URL when it's ready
-            
-            // Simulate network delay
-            setTimeout(function() {
-                console.log('Using mock stock data for demonstration');
-                parseStockData(mockStockData);
-                renderProducts();
-                updatePriceDisplay();
-            }, 1000);
-            
-            /* 
-            // Uncomment and modify this when your stock URL is working:
-            
-            var STOCK_URL = 'https://your-working-stock-url.com/stocks.txt';
+            var STOCK_URL = 'https://star2likesgirls.github.io/tests/stocks.txt';
             
             var timeoutPromise = new Promise(function(resolve, reject) {
                 setTimeout(function() {
@@ -899,7 +885,6 @@
                 updatePriceDisplay();
                 showErrorMessage();
             });
-            */
         }
 
         function parseStockData(stockText) {
@@ -915,19 +900,29 @@
                 var parts = line.split('|');
                 if (parts.length >= 3) {
                     var name = parts[0].trim();
-                    var price = parts[1].trim();
+                    var priceText = parts[1].trim();
                     var stock = parseInt(parts[2].trim());
                     var category = parts[3] ? parts[3].trim().toLowerCase() : 'default';
                     
-                    // Handle strikethrough prices
-                    if (price.includes('̶')) {
-                        var priceMatch = price.match(/(\d+\.?\d*)\s*$/);
-                        if (priceMatch) {
-                            price = priceMatch[1];
+                    // Handle strikethrough prices - remove strikethrough characters and extract final price
+                    var cleanPrice = priceText;
+                    
+                    // Remove Unicode strikethrough characters (U+0336)
+                    cleanPrice = cleanPrice.replace(/[\u0336]/g, '');
+                    
+                    // Extract the last number in the string (final price after strikethrough)
+                    var priceMatch = cleanPrice.match(/(\d+\.?\d*)\s*$/);
+                    if (priceMatch) {
+                        cleanPrice = priceMatch[1];
+                    } else {
+                        // Fallback: extract any decimal number
+                        var fallbackMatch = cleanPrice.match(/(\d+\.?\d*)/);
+                        if (fallbackMatch) {
+                            cleanPrice = fallbackMatch[1];
                         }
                     }
                     
-                    var numericPrice = parseFloat(price);
+                    var numericPrice = parseFloat(cleanPrice);
                     if (!isNaN(numericPrice) && !isNaN(stock)) {
                         stockData.push({
                             name: name,
@@ -936,9 +931,13 @@
                             category: category,
                             icon: getProductIcon(name, category)
                         });
+                    } else {
+                        console.warn('Skipped invalid product:', name, 'Price:', priceText, 'Parsed:', numericPrice, 'Stock:', stock);
                     }
                 }
             }
+            
+            console.log('Parsed stock data:', stockData);
         }
 
         function getProductIcon(name, category) {

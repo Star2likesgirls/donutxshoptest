@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonutX Shop | Minecraft Items & Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #2795F5;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(39, 149, 245, 0.1), rgba(30, 122, 212, 0.05));
+            border-bottom: 1px solid rgba(39, 149, 245, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2795F5;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 20px rgba(39, 149, 245, 0.6);
+            cursor: pointer;
+        }
+
+        .logo::before {
+            content: "🍩";
+            margin-right: 0.5rem;
+            font-size: 2.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(39, 149, 245, 0.2);
+            border-color: rgba(39, 149, 245, 0.5);
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 4rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2795F5, #ffffff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2795F5, #1e7ad4);
+            color: #000000;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 149, 245, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 149, 245, 0.4);
+        }
+
+        .steps-section {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(39, 149, 245, 0.2);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .steps-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #2795F5;
+        }
+
+        .steps-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #aaaaaa;
+            margin-bottom: 3rem;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(39, 149, 245, 0.05), rgba(30, 122, 212, 0.02));
+            border: 1px solid rgba(39, 149, 245, 0.2);
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            border-color: rgba(39, 149, 245, 0.5);
+            box-shadow: 0 10px 30px rgba(39, 149, 245, 0.15);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #2795F5, #1e7ad4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #000000;
+            box-shadow: 0 5px 15px rgba(39, 149, 245, 0.3);
+        }
+
+        .step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .step p {
+            color: #aaaaaa;
+            line-height: 1.6;
+        }
+
+        .shop-section {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(39, 149, 245, 0.2);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .notice {
+            background: linear-gradient(135deg, rgba(39, 149, 245, 0.1), rgba(30, 122, 212, 0.05));
+            border: 1px solid rgba(39, 149, 245, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #2795F5;
+        }
+
+        .notice p {
+            margin-bottom: 0.5rem;
+            color: #cccccc;
+        }
+
+        .notice strong {
+            color: #2795F5;
+        }
+
+        .discord-link {
+            color: #2795F5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .discord-link:hover {
+            text-decoration: underline;
+        }
+
+        .stock-update-info {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(67, 160, 71, 0.05));
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .stock-update-info p {
+            margin-bottom: 0.5rem;
+            color: #cccccc;
+        }
+
+        .stock-update-info strong {
+            color: #4CAF50;
+        }
+
+        .price-converter {
+            background: linear-gradient(135deg, #2795F5, #1e7ad4);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(39, 149, 245, 0.3);
+        }
+
+        .price-converter h3 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .converter-grid label {
+            color: #000000;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .converter-grid input,
+        .converter-grid select {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .converter-grid button {
+            padding: 0.8rem 1.5rem;
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .converter-grid button:hover {
+            background: #333333;
+            transform: translateY(-2px);
+        }
+
+        .calculator-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(39, 149, 245, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(39, 149, 245, 0.5);
+            box-shadow: 0 10px 30px rgba(39, 149, 245, 0.15);
+        }
+
+        .product-card.out-of-stock {
+            opacity: 0.5;
+            filter: grayscale(50%);
+        }
+
+        .product-image {
+            position: relative;
+            background: linear-gradient(135deg, #2795F5, #1e7ad4);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .product-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .stock-badge.available {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .stock-badge.out-of-stock {
+            background: #f44336;
+            color: white;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .product-description {
+            color: #aaaaaa;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2795F5;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #2795F5, #1e7ad4);
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .add-to-cart-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 149, 245, 0.4);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #666666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            color: #999999;
+        }
+
+        .cart-summary {
+            background: linear-gradient(135deg, #2795F5, #1e7ad4);
+            color: #000000;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            display: none;
+            box-shadow: 0 4px 15px rgba(39, 149, 245, 0.3);
+        }
+
+        .cart-summary h4 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #000000;
+        }
+
+        .cart-item button {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 2px 6px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(39, 149, 245, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            color: #ffffff;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaaaaa;
+        }
+
+        .close-modal:hover {
+            color: #ffffff;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #2795F5;
+        }
+
+        footer {
+            background: linear-gradient(135deg, rgba(39, 149, 245, 0.1), rgba(30, 122, 212, 0.05));
+            border-top: 1px solid rgba(39, 149, 245, 0.2);
+            color: #cccccc;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .nav-links a {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="background"></div>
+    
+    <header>
+        <nav class="container">
+            <div class="logo" onclick="showPage('home')">DonutX</div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('home')" class="nav-link active" data-page="home">Home</a></li>
+                <li><a onclick="showPage('shop')" class="nav-link" data-page="shop">Shop</a></li>
+                <li><a href="https://discord.gg/2dbchSR64c" target="_blank" class="nav-link">Discord</a></li>
+                <li><a href="#" class="nav-link">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Home Page -->
+        <div id="home-page" class="page-content active">
+            <section class="hero">
+                <h1>DonutX Shop</h1>
+                <p>Get your favorite DonutSMP in-game items delivered securely</p>
+                <button class="cta-button" onclick="showPage('shop')">Start Shopping</button>
+            </section>
+
+            <section class="steps-section">
+                <h2 class="steps-title">How it Works!</h2>
+                <p class="steps-subtitle">3 simple steps to complete a purchase!</p>
+                
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-icon">🛒</div>
+                        <h3>Shop</h3>
+                        <p>Explore the shop and find any product you may want to purchase</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">💳</div>
+                        <h3>Pay with Stripe</h3>
+                        <p>Checkout securely with Stripe payment processing</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">🎫</div>
+                        <h3>Discord Ticket</h3>
+                        <p>After payment, create a Discord ticket to receive your in-game items</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Shop Page -->
+        <div id="shop-page" class="page-content">
+            <section class="hero">
+                <h1>DonutX Shop</h1>
+                <p>Browse our collection of exclusive DonutSMP items</p>
+            </section>
+
+            <section class="shop-section">
+                <div class="notice">
+                    <p><strong>Payment:</strong> Secure checkout with Stripe</p>
+                    <p><strong>Item Delivery:</strong> After payment, create a support ticket on <a href="https://discord.gg/2dbchSR64c" class="discord-link" target="_blank">Discord</a> to receive your in-game items</p>
+                    <p><strong>Disclaimer:</strong> We are NOT Related or Associated to DonutHub.Store</p>
+                </div>
+
+                <div class="stock-update-info">
+                    <p><strong>Auto-Updated Stock:</strong> Our inventory is automatically updated every 30 seconds</p>
+                    <p><strong>Real-Time Pricing:</strong> All prices and availability are fetched from our live stock system</p>
+                </div>
+
+                <!-- Price Converter -->
+                <div class="price-converter">
+                    <h3>💰 Price Calculator</h3>
+                    <div class="converter-grid">
+                        <div>
+                            <label for="amount">Amount:</label>
+                            <input type="number" id="amount" placeholder="Enter amount">
+                        </div>
+                        <div>
+                            <label for="itemType">Item Type:</label>
+                            <select id="itemType">
+                                <option value="">Select item...</option>
+                            </select>
+                        </div>
+                        <button onclick="calculatePrice()">Calculate</button>
+                    </div>
+                    <div id="calculatorResult" class="calculator-result">Select an item and enter an amount to calculate total price</div>
+                </div>
+
+                <div id="productGrid" class="product-grid">
+                    <div class="loading">
+                        <h3>🔄 Loading products...</h3>
+                        <p>Fetching latest stock information...</p>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div id="cartSummary" class="cart-summary">
+                    <h4>🛒 Cart Summary</h4>
+                    <div id="cartItems"></div>
+                    <div id="cartTotal" style="font-weight: bold; margin-top: 1rem;"></div>
+                    <button onclick="proceedToStripe()" style="background: #000000; color: #ffffff; border: none; padding: 1rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; transition: all 0.3s ease;">
+                        <span>💳</span> Checkout with Stripe
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bulk Order Modal -->
+    <div id="bulkModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeBulkModal()">&times;</button>
+            <h3 id="modalTitle">Bulk Order</h3>
+            <div style="margin: 1rem 0;">
+                <label for="bulkAmount" style="color: #ffffff; font-weight: 600;">Quantity:</label>
+                <input type="number" id="bulkAmount" placeholder="Enter quantity" style="width: 100%; padding: 0.8rem; margin-top: 0.5rem; border: 1px solid #333; border-radius: 5px; background: rgba(255,255,255,0.1); color: #ffffff;">
+            </div>
+            <div id="bulkPrice" style="margin: 1rem 0; font-weight: bold; color: #2795F5;"></div>
+            <button onclick="addBulkToCart()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #2795F5, #1e7ad4); color: #000000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Add to Cart</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 DonutX Shop. All rights reserved.</p>
+            <p>Secure payments with Stripe • Item delivery via Discord tickets</p>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+        let currentBulkItem = null;
+        let stockData = [];
+        const STOCK_URL = 'https://your-stock-url.com/stock.txt'; // Replace with actual stock URL
+
+        // Product icons mapping
+        const productIcons = {
+            'money': '💰',
+            'currency': '💰',
+            'spawners': '🔥',
+            'spawner': '🔥',
+            'kit': '🛡️',
+            'kits': '🛡️',
+            'generator': '⚡',
+            'generators': '⚡',
+            'default': '📦'
+        };
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = Math.random() * window.innerHeight + 'px';
+            
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            
+            document.getElementById('background').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 20000);
+        }
+
+        // Initialize particles
+        function initParticles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createParticle, i * 200);
+            }
+            
+            setInterval(createParticle, 2000);
+        }
+
+        function showPage(pageName) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageName + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // Load shop data when showing shop page
+            if (pageName === 'shop' && stockData.length === 0) {
+                fetchStockData();
+            }
+        }
+
+        // Mock function for demo - replace with actual fetch to your stock URL
+        async function fetchStockData() {
+            try {
+                // Mock data based on your format - replace this with actual fetch
+                const mockStockData = `# DryShop Products - Auto-Updated Stock System
+# Format: Product Name|Price|Stock|Category (category optional)
+# Last updated: Use GitHub to track changes automatically
+# Current Inventory
+1 million DonutSMP Money|0.15|10|Currency
+Skeleton Spawners|0.15|0|Spawners
+Netherite Kit|15|0|kits
+Basic diamond kit|0.01|0|kits
+Premium generator 1 month|10|9999|Account Generators`;
+
+                // In a real implementation, you'd use:
+                // const response = await fetch(STOCK_URL);
+                // const stockText = await response.text();
+                
+                parseStockData(mockStockData);
+                renderProducts();
+                updatePriceCalculator();
+                
+            } catch (error) {
+                console.error('Failed to fetch stock data:', error);
+                showErrorMessage();
+            }
+        }
+
+        function parseStockData(stockText) {
+            stockData = [];
+            const lines = stockText.split('\n');
+            
+            for (const line of lines) {
+                // Skip comments and empty lines
+                if (line.trim().startsWith('#') || !line.trim()) {
+                    continue;
+                }
+                
+                const parts = line.split('|');
+                if (parts.length >= 3) {
+                    const name = parts[0].trim();
+                    let price = parts[1].trim();
+                    const stock = parseInt(parts[2].trim());
+                    const category = parts[3] ? parts[3].trim().toLowerCase() : 'default';
+                    
+                    // Handle strikethrough prices (like 0̶.4̶  0.15)
+                    if (price.includes('̶')) {
+                        const priceMatch = price.match(/(\d+\.?\d*)\s*$/);
+                        if (priceMatch) {
+                            price = priceMatch[1];
+                        }
+                    }
+                    
+                    const numericPrice = parseFloat(price);
+                    if (!isNaN(numericPrice)) {
+                        stockData.push({
+                            name,
+                            price: numericPrice,
+                            stock,
+                            category,
+                            icon: getProductIcon(name, category)
+                        });
+                    }
+                }
+            }
+        }
+
+        function getProductIcon(name, category) {
+            const nameLC = name.toLowerCase();
+            
+            // Check for specific keywords in name
+            for (const [keyword, icon] of Object.entries(productIcons)) {
+                if (nameLC.includes(keyword)) {
+                    return icon;
+                }
+            }
+            
+            // Check category
+            return productIcons[category] || productIcons['default'];
+        }
+
+        function renderProducts() {
+            const productGrid = document.getElementById('productGrid');
+            if (!productGrid) return;
+
+            if (stockData.length === 0) {
+                productGrid.innerHTML = `
+                    <div class="loading">
+                        <h3>❌ No products available</h3

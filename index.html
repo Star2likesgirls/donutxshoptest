@@ -534,12 +534,7 @@
     <header>
         <nav class="container">
             <a href="index.html" class="logo">DonutX</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html" class="active">Shop</a></li>
-                <li><a href="https://discord.gg/2dbchSR64c" target="_blank">Discord</a></li>
-                <li><a href="#">Support</a></li>
-            </ul>
+
         </nav>
     </header>
 
@@ -635,7 +630,7 @@
     <footer>
         <div class="container">
             <p>&copy; 2024 DonutX Shop. All rights reserved.</p>
-            <p>Secure payments with Stripe • Item delivery via Discord tickets</p>
+            <p>Contact us on Discord for payments • Item delivery via Discord tickets</p>
         </div>
     </footer>
 
@@ -645,11 +640,20 @@
         var currentBulkItem = null;
         var stockData = [];
         var exchangeRates = {};
-        var STOCK_URL = 'https://star2likesgirls.github.io/tests/stocks.txt';
-        var EXCHANGE_API_URL = 'https://api.exchangerate-api.com/v4/latest/EUR';
         
-        // Initialize Stripe (replace with your publishable key)
-        var stripe = Stripe('pk_test_51234567890abcdef...');  // Replace with your actual publishable key
+        // Mock data for testing - replace with your actual stock URL when it's working
+        var mockStockData = "# DryShop Products - Auto-Updated Stock System\n" +
+            "# Format: Product Name|Price|Stock|Category (category optional)\n" +
+            "# Last updated: Use GitHub to track changes automatically\n" +
+            "# Current Inventory\n" +
+            "1 million DonutSMP Money|0.15|10|Currency\n" +
+            "Skeleton Spawners|0.15|5|Spawners\n" +
+            "Netherite Kit|15|3|kits\n" +
+            "Basic diamond kit|0.01|25|kits\n" +
+            "Premium generator 1 month|10|9999|Account Generators\n" +
+            "Zombie Spawner|0.20|8|Spawners\n" +
+            "Iron Kit|5.50|12|kits\n" +
+            "Blaze Spawner|0.75|2|Spawners";
 
         // Product icons mapping
         var productIcons = {
@@ -708,38 +712,54 @@
             setInterval(createParticle, 2000);
         }
 
-        // Fetch exchange rates
+        // Fetch exchange rates with better error handling
         function fetchExchangeRates() {
-            fetch(EXCHANGE_API_URL)
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    exchangeRates = data.rates;
-                    exchangeRates['EUR'] = 1; // Base currency
-                    updateCurrencyStatus('✅ Exchange rates updated successfully');
-                    updatePriceDisplay();
-                    renderProducts(); // Re-render products with converted prices
-                })
-                .catch(function(error) {
-                    console.error('Failed to fetch exchange rates:', error);
-                    // Fallback rates
-                    exchangeRates = {
-                        'EUR': 1,
-                        'USD': 1.08,
-                        'GBP': 0.86,
-                        'CAD': 1.47,
-                        'AUD': 1.66,
-                        'JPY': 162,
-                        'CHF': 0.97,
-                        'SEK': 11.5,
-                        'NOK': 11.8,
-                        'DKK': 7.46
-                    };
-                    updateCurrencyStatus('⚠️ Using fallback exchange rates');
-                    updatePriceDisplay();
-                    renderProducts();
-                });
+            // Use a more reliable exchange rate API with fallback
+            var exchangeApiUrl = 'https://api.exchangerate-api.com/v4/latest/EUR';
+            
+            // Set a timeout for the fetch request
+            var timeoutPromise = new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    reject(new Error('Exchange rate fetch timeout'));
+                }, 5000); // 5 second timeout
+            });
+            
+            Promise.race([
+                fetch(exchangeApiUrl),
+                timeoutPromise
+            ])
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Exchange rate API response not ok');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                exchangeRates = data.rates;
+                exchangeRates['EUR'] = 1; // Base currency
+                updateCurrencyStatus('✅ Exchange rates updated successfully');
+                updatePriceDisplay();
+                renderProducts(); // Re-render products with converted prices
+            })
+            .catch(function(error) {
+                console.error('Failed to fetch exchange rates:', error);
+                // Use fallback rates immediately
+                exchangeRates = {
+                    'EUR': 1,
+                    'USD': 1.08,
+                    'GBP': 0.86,
+                    'CAD': 1.47,
+                    'AUD': 1.66,
+                    'JPY': 162,
+                    'CHF': 0.97,
+                    'SEK': 11.5,
+                    'NOK': 11.8,
+                    'DKK': 7.46
+                };
+                updateCurrencyStatus('⚠️ Using fallback exchange rates');
+                updatePriceDisplay();
+                renderProducts();
+            });
         }
 
         function updateCurrencyStatus(message) {
@@ -831,36 +851,55 @@
             }
         }
 
-        // Fetch stock data from GitHub
+        // Fetch stock data with better error handling and timeout
         function fetchStockData() {
-            fetch(STOCK_URL)
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(stockText) {
-                    console.log('Stock data received:', stockText);
-                    parseStockData(stockText);
-                    renderProducts();
-                    updatePriceDisplay();
-                })
-                .catch(function(error) {
-                    console.error('Failed to fetch stock data:', error);
-                    // Fallback to mock data
-                    var mockStockData = "# DryShop Products - Auto-Updated Stock System\n" +
-                        "# Format: Product Name|Price|Stock|Category (category optional)\n" +
-                        "# Last updated: Use GitHub to track changes automatically\n" +
-                        "# Current Inventory\n" +
-                        "1 million DonutSMP Money|0.15|10|Currency\n" +
-                        "Skeleton Spawners|0.15|0|Spawners\n" +
-                        "Netherite Kit|15|0|kits\n" +
-                        "Basic diamond kit|0.01|0|kits\n" +
-                        "Premium generator 1 month|10|9999|Account Generators";
-                    
-                    parseStockData(mockStockData);
-                    renderProducts();
-                    updatePriceDisplay();
-                    showErrorMessage();
-                });
+            // For now, use mock data since the external URL might not be working
+            // Replace this with your actual stock URL when it's ready
+            
+            // Simulate network delay
+            setTimeout(function() {
+                console.log('Using mock stock data for demonstration');
+                parseStockData(mockStockData);
+                renderProducts();
+                updatePriceDisplay();
+            }, 1000);
+            
+            /* 
+            // Uncomment and modify this when your stock URL is working:
+            
+            var STOCK_URL = 'https://your-working-stock-url.com/stocks.txt';
+            
+            var timeoutPromise = new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    reject(new Error('Stock data fetch timeout'));
+                }, 10000); // 10 second timeout
+            });
+            
+            Promise.race([
+                fetch(STOCK_URL),
+                timeoutPromise
+            ])
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Stock API response not ok');
+                }
+                return response.text();
+            })
+            .then(function(stockText) {
+                console.log('Stock data received:', stockText);
+                parseStockData(stockText);
+                renderProducts();
+                updatePriceDisplay();
+            })
+            .catch(function(error) {
+                console.error('Failed to fetch stock data:', error);
+                // Fallback to mock data
+                parseStockData(mockStockData);
+                renderProducts();
+                updatePriceDisplay();
+                showErrorMessage();
+            });
+            */
         }
 
         function parseStockData(stockText) {
@@ -889,7 +928,7 @@
                     }
                     
                     var numericPrice = parseFloat(price);
-                    if (!isNaN(numericPrice)) {
+                    if (!isNaN(numericPrice) && !isNaN(stock)) {
                         stockData.push({
                             name: name,
                             price: numericPrice,
@@ -906,12 +945,12 @@
             var nameLC = name.toLowerCase();
             
             for (var keyword in productIcons) {
-                if (nameLC.includes(keyword)) {
+                if (nameLC.includes(keyword) || category.includes(keyword)) {
                     return productIcons[keyword];
                 }
             }
             
-            return productIcons[category] || productIcons['default'];
+            return productIcons['default'];
         }
 
         function renderProducts() {
@@ -1157,10 +1196,13 @@
         function showErrorMessage() {
             var productGrid = document.getElementById('productGrid');
             if (productGrid) {
-                productGrid.innerHTML = '<div class="loading">' +
-                    '<h3>⚠️ Failed to load live stock data</h3>' +
-                    '<p>Using fallback product data. Some items may not reflect current availability.</p>' +
-                    '</div>';
+                // Don't overwrite if products are already showing
+                if (stockData.length === 0) {
+                    productGrid.innerHTML = '<div class="loading">' +
+                        '<h3>⚠️ Using demo data</h3>' +
+                        '<p>Live stock data unavailable. Showing sample products for demonstration.</p>' +
+                        '</div>';
+                }
             }
         }
 
@@ -1170,10 +1212,9 @@
             setupCurrencyListeners();
             fetchExchangeRates();
             fetchStockData();
-            handlePaymentSuccess(); // Check for payment return
             
-            // Auto-refresh stock data every 30 seconds
-            setInterval(fetchStockData, 30000);
+            // Auto-refresh stock data every 30 seconds (disabled for demo)
+            // setInterval(fetchStockData, 30000);
         });
 
         // Close modal when clicking outside

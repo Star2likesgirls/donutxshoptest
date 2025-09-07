@@ -546,7 +546,7 @@
 
         <section class="shop-section">
             <div class="notice">
-                <p><strong>Payment:</strong> Secure checkout with Stripe</p>
+                <p><strong>Payment:</strong> Secure checkout</p>
                 <p><strong>Item Delivery:</strong> After payment, create a support ticket on <a href="https://discord.gg/STfwHB3fwW" class="discord-link" target="_blank">Discord</a> to receive your in-game items</p>
                 <p><strong>Disclaimer:</strong> We are NOT Related or Associated to DonutSMP</p>
             </div>
@@ -607,7 +607,7 @@
                 <div id="cartItems"></div>
                 <div id="cartTotal" style="font-weight: bold; margin-top: 1rem;"></div>
                 <button id="checkoutBtn" class="checkout-btn" onclick="proceedToStripe()">
-                    <span>💳</span> Checkout with Stripe
+                    <span>💳</span> Checkout
                 </button>
             </div>
         </section>
@@ -853,7 +853,7 @@
 
         // Fetch stock data with better error handling and timeout
         function fetchStockData() {
-            var STOCK_URL = 'https://star2likesgirls.github.io/tests/stocks.txt';
+            var STOCK_URL = 'https://star2likesgirls.github.io/tests/stock.txt';
             
             var timeoutPromise = new Promise(function(resolve, reject) {
                 setTimeout(function() {
@@ -1189,7 +1189,7 @@
                 return;
             }
             
-            alert('Stripe checkout would be implemented here. Please create a Discord ticket for now.');
+            alert('Please create a Discord ticket for now. https://discord.gg/STfwHB3fwW');
         }
 
         function showErrorMessage() {
